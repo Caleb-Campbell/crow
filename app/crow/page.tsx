@@ -1,71 +1,62 @@
-import { Button } from "@/components/ui/button";
-import prisma from "../utils/prisma";
-import { useEffect, useState } from "react";
-import { NewCrowModal } from "@/components/crows/newCrowModal";
-import { SignOutButton, SignUpButton, auth } from "@clerk/nextjs";
-import { SignIn, SignUp } from "@clerk/clerk-react";
-import SignInCard from "@/components/SignInCard";
-import { Divide } from "lucide-react";
-import { CrowList } from "@/components/crows/CrowList";
-import SignUpCard from "@/components/SignUpCard";
+import SignInCard from "@/components/SignInCard"
+import { CrowList } from "@/components/crows/CrowList"
+import { auth } from "@clerk/nextjs"
+import prisma from "../utils/prisma"
+import { NewCrowModal } from "@/components/crows/newCrowModal"
+import CrowView from "@/components/crows/CrowView"
+
   
 export default async function IndexPage() {
 
-    const userEmail = 'calebcampbellcrm@gmail.com'
+  const { userId } = auth()
 
-    const { userId, getToken } = auth()
-    console.log(userId, getToken)
+  if (userId) {
 
-    const fetchCrows = async ({ userEmail }: {userEmail: string}) => {
-        "use server"
-        return await prisma.crow.findMany({
-
-        })
+    const refetch = async () => {
+      "use server"
+      return await prisma.crow.findMany({
+        where: {
+          userId: userId
+        }
+      })
     }
+
+    let crows = await refetch()
 
     const createCrow = async (title: string) => {
-        "use server"
-       prisma.crow.create({
-            data: {
-                title,
-                User: {
-                    connect: {
-                        email: userEmail
-                    }
-                }
-            }
-       })
-    }
+      "use server"
+      await prisma.crow.create({
+      data: {
+        title: title,
+        userId: userId
+      }
+    })
+    crows = await refetch()
+    return crows
+  }
 
-        const user = fetchCrows({ userEmail }) || undefined
 
-        return (
-            <section className="h-full w-full">
+    return (
+      <section>
+        <NewCrowModal post={createCrow} />
         {
-            user ? (
-                <div>
-                    <SignOutButton>
-                        <Button variant={'outline'} className="absolute right-3 top-20">Sign Out</Button>
-                    </SignOutButton>
-                    <div className=" mx-auto mt-4 flex w-3/12 justify-center">
-                    <NewCrowModal post={createCrow} />
-                    </div>
-                    {
-                        user ? (
-                            <CrowList user={user}/>
-                            ):(
-                                <div>
-                                <h1>No Crows To Show</h1>
-                            </div>
-                        )
-                        
-                    }
-                </div>):(
-                    <div>
-                    <SignInCard />
-                    </div>
-                )
-            }
+          crows ? (
+            // create a grid for
+            <CrowView crows={crows} />
+          ):(
+            <h1>No Crows To Show</h1>
+          )
+        }
+      </section>
+    )
+  }
+
+  return (
+    <section>
+      <p>Please sign in</p>
+      <SignInCard />
     </section>
   )
+
+
 }

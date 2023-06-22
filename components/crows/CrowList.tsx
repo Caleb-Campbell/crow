@@ -1,22 +1,30 @@
 "use client"
 
 import { Prisma } from "@prisma/client"
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "@radix-ui/react-hover-card"
+import { CalendarDays } from "lucide-react"
+import { Button } from "../ui/button"
 
-export const CrowList = ({user}:{user:any}) => {
-
-    
-
+export const CrowList = ({crows, showCrow}:{crows:any, showCrow: any}) => {
 
     return (
         <div>{
-            user.Crow ? (
-                <div>
+            crows ? (
+                // create a grid for each element
+                <div className="flex justify-around items-around" >
             {
-                user.Crow.map((crow: any) => {
+                crows.map((crow: any) => {
                     return (
-                        <div key={crow.id}>
-                            <h1>{crow.title}</h1>
-                        </div>
+                        <HoverCard>
+                        <HoverCardTrigger asChild>
+                          <Button onClick={()=>{showCrow(crow)}} variant="link">{crow.title}</Button>
+                        </HoverCardTrigger>
+                        <HoverCardContent className="w-80">
+                          <div className="flex justify-between space-x-4">
+                            click to view this issue
+                          </div>
+                        </HoverCardContent>
+                      </HoverCard>
                     )
                 })
             }

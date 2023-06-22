@@ -13,7 +13,7 @@ model Crow {
   updatedAt DateTime   @updatedAt
   title     String
   isOpen    Boolean    @default(true)
-  User      User       @relation(fields: [id], references: [id], onDelete: Cascade)
+  userId    String?
   Preflight Preflight?
   StepData  StepData?
 }
@@ -35,14 +35,6 @@ model StepData {
   title     String
   snippet   String
   Crow      Crow     @relation(fields: [id], references: [id], onDelete: Cascade)
-}
-
-model User {
-  id    String  @id @default(uuid())
-  name  String?
-  email String? @unique
-  image String?
-  Crow  Crow[]
 }
 
 model VerificationToken {

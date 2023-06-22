@@ -25,3 +25,25 @@ export const Modal = ({children, title}:{
             </>
         )
 }
+
+export const StatelessModal = ({children, title, open, setOpen}:{
+    children: React.ReactNode
+    title?: string
+    open: boolean
+    setOpen: any
+}) => {
+        
+            return (
+                <>
+                {
+                    open && (
+                        <div className="absolute w-screen h-screen top-0 left-0 flex justify-center items-center">
+                            <div className="bg-slate-800 bg-opacity-20 w-screen h-screen absolute top-0 right-0" onClick={()=>setOpen(false)} />
+                            {children}
+                        </div>
+                    )
+                }
+    
+                </>
+            )
+    }
