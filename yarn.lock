@@ -643,7 +643,7 @@
   dependencies:
     "@babel/runtime" "^7.13.10"
 
-"@radix-ui/react-context-menu@latest":
+"@radix-ui/react-context-menu@^2.1.4", "@radix-ui/react-context-menu@latest":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-context-menu/-/react-context-menu-2.1.4.tgz#250420d259d3cebe026b7658414c516a1204de3f"
   integrity sha512-HVHLUtZOBiR2Fh5l07qQ9y0IgX4dGZF0S9Gwdk4CVA+DL9afSphvFNa4nRiw6RNgb6quwLV4dLPF/gFDvNaOcQ==

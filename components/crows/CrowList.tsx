@@ -1,37 +1,57 @@
 "use client"
-
-import { Prisma } from "@prisma/client"
-import { HoverCard, HoverCardTrigger, HoverCardContent } from "@radix-ui/react-hover-card"
-import { CalendarDays } from "lucide-react"
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+  } from "@/components/ui/table"
+  import { TrashIcon } from "lucide-react"
 import { Button } from "../ui/button"
+  
+export const CrowList = ({crows, showCrow, done}:{crows:any, showCrow: any, done: (val: string) => void}) => {
 
-export const CrowList = ({crows, showCrow}:{crows:any, showCrow: any}) => {
+    if (crows.length) return (
+        <div>
+            <Table>
+                <TableCaption>Your Crows</TableCaption>
+                <TableHeader>
+                    <TableRow>
+                    <TableHead className="w-[100px]">ID</TableHead>
+                    <TableHead>ID</TableHead>
+                    <TableHead>Issue</TableHead>
+                    <TableHead className="text-center">Created</TableHead>
+                    <TableHead className="text-right mr-4">Delete</TableHead>
+                    </TableRow>
+                </TableHeader>
+                {
+                    crows.map((crow:any) => (
+                        <TableBody key={crow.id}>
+                            <TableRow className="cursor-pointer" onClick={()=>{showCrow(crow)}}>
+                            <TableCell className="font-medium uppercase">{crow.id.split('').splice(0,8).join('')}</TableCell>
+                            <TableCell>{crow.isOpen ? (<span className="text-green-600">OPEN</span>) : (<span className="text-destructive">CLOSED</span>)}</TableCell>
+                            <TableCell className="uppercase">{crow.title}</TableCell>
+                            <TableCell className="text-center">{`${crow.createdAt.getMonth()}-${crow.createdAt.getMonth()}-${crow.createdAt.getFullYear()}`}</TableCell>
+                            <TableCell onClick={()=>{done(crow.id)}} className="text-right float-right">
+                                <Button className="w-12 h-10 m-0 opacity-20 hover:opacity-90 transition-all" variant={'destructive'}>
+                                <TrashIcon />
+                                </Button>
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    )
+                    )
+
+                }
+            </Table>    
+        </div>
+    )
 
     return (
-        <div>{
-            crows ? (
-                // create a grid for each element
-                <div className="flex justify-around items-around" >
-            {
-                crows.map((crow: any) => {
-                    return (
-                        <HoverCard>
-                        <HoverCardTrigger asChild>
-                          <Button onClick={()=>{showCrow(crow)}} variant="link">{crow.title}</Button>
-                        </HoverCardTrigger>
-                        <HoverCardContent className="w-80">
-                          <div className="flex justify-between space-x-4">
-                            click to view this issue
-                          </div>
-                        </HoverCardContent>
-                      </HoverCard>
-                    )
-                })
-            }
-                </div>
-            ):(
-                <h1>No Crows To Show</h1>
-            )}
+        <div className="flex items-center justify-center">
+            <h1>No Crows To Show</h1>
         </div>
     )
 }

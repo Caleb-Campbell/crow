@@ -1,0 +1,13 @@
+-- CreateTable
+CREATE TABLE "PRStep" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "title" TEXT NOT NULL,
+    "completed" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "PRStep_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "PRStep" ADD CONSTRAINT "PRStep_id_fkey" FOREIGN KEY ("id") REFERENCES "Crow"("id") ON DELETE CASCADE ON UPDATE CASCADE;
