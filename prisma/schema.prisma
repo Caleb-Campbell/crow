@@ -13,9 +13,10 @@ model Crow {
   updatedAt DateTime   @updatedAt
   title     String
   isOpen    Boolean    @default(true)
-  User      User       @relation(fields: [id], references: [id], onDelete: Cascade)
-  Preflight Preflight?
-  StepData  StepData?
+  userId    String?
+  Preflight Preflight[]
+  StepData  StepData[]
+  PRStep    PRStep[]
 }
 
 model Preflight {
@@ -28,27 +29,20 @@ model Preflight {
   Crow       Crow     @relation(fields: [id], references: [id], onDelete: Cascade)
 }
 
-model StepData {
+model PRStep {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   title     String
-  snippet   String
+  completed Boolean  @default(false)
   Crow      Crow     @relation(fields: [id], references: [id], onDelete: Cascade)
 }
 
-model User {
-  id    String  @id @default(uuid())
-  name  String?
-  email String? @unique
-  image String?
-  Crow  Crow[]
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
+model StepData {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String?
+  snippet   String?
+  Crow      Crow     @relation(fields: [id], references: [id], onDelete: Cascade)
 }

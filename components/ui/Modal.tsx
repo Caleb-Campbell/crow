@@ -11,7 +11,7 @@ export const Modal = ({children, title}:{
     
         return (
             <>
-            <Button onClick={()=>setShowModal(!showModal)} variant={'default'}>Create New Crow
+            <Button className="mx-auto m-3" onClick={()=>setShowModal(!showModal)} variant={'default'}>{title ? title : "Open Modal"}
             </Button>
             {
                 showModal && (
@@ -25,3 +25,25 @@ export const Modal = ({children, title}:{
             </>
         )
 }
+
+export const StatelessModal = ({children, title, open, setOpen}:{
+    children: React.ReactNode
+    title?: string
+    open: boolean
+    setOpen: any
+}) => {
+        
+            return (
+                <>
+                {
+                    open && (
+                        <div className="absolute w-screen h-screen top-0 left-0 flex justify-center items-center">
+                            <div className="bg-background bg-opacity-50 w-screen h-screen absolute top-0 right-0" onClick={()=>setOpen(false)} />
+                            {children}
+                        </div>
+                    )
+                }
+    
+                </>
+            )
+    }
